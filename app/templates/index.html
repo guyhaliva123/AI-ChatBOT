@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderBOT</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">OrderBOT for Pizza Delivery</h1>
+        <p class="text-center"><strong>AI Pizza Assistant:</strong>
+            <br>Hello! Welcome to our pizza ordering service. How can I assist you today?</p>
+        <div id="conversation">
+            {% for message in context %}
+                {% if message.role == 'user' %}
+                    <p><strong>Customer:</strong> {{ message.content }}</p>
+                {% elif message.role == 'assistant' %}
+                    <p><strong>AI Pizza Assistant:</strong> {{ message.content }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <form method="POST">
+            <label for="user_input">Your Request:</label><br>
+            <textarea id="user_input" name="user_input" rows="4" cols="50"></textarea><br>
+            <div class="text-center">
+                <input type="submit" name="action" value="Chat" class="btn btn-primary">
+                <input type="submit" name="action" value="Finish Order" class="btn btn-success">
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (optional) -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
