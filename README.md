@@ -6,21 +6,21 @@ This project is a Pizza Order Chatbot that allows users to interact with an AI-p
 
 ## How to Run
 
-Clone the repository to your local machine.
+1. Clone the repository to your local machine.
 
-Install the required dependencies using [pip](https://pip.pypa.io/en/stable/).
+2. Install the required dependencies using [pip](https://pip.pypa.io/en/stable/).
 ```bash
 pip install -r requirements.txt
 ```
 
-Set up your OpenAI API key in the app.py file or in the 'my_file_txt' file.
+3. Set up your OpenAI API key in the app.py file or in the 'my_file_txt' file.
 
-Run the Flask app by executing this line in your terminal.
+4. Run the Flask app by executing this line in your terminal.
 ```bash
 python app.py
 ```
 
-Open your web browser and navigate to http://localhost:5000 to interact with the chatbot.
+5. Open your web browser and navigate to http://localhost:5000 to interact with the chatbot.
 
 ## Skills Used
 
