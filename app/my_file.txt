@@ -1,1 +1,1 @@
-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
+delete this row and paste your secret-key. this page should conatin only your secret key.
