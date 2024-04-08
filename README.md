@@ -25,8 +25,13 @@ Open your web browser and navigate to http://localhost:5000 to interact with the
 ## Skills Used
 
 -Python programming for backend development.
+
 -Flask web framework for creating the web application.
+
 -HTML and Jinja templating for the frontend interface.
+
 -OpenAI API for natural language processing and chatbot capabilities.
+
 -Conversational design for a friendly and intuitive user experience.
+
 -Completion of the Prompt Developer course on the OpenAI platform for crafting effective prompts and utilizing language models effectively.
