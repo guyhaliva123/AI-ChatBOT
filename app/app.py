@@ -6,11 +6,12 @@ from flask import Flask, render_template, request
 # 1. go to https://platform.openai.com/docs/overview
 # 2. on the side nav-bar press->API keys.
 # 3. copy the secret key if you don't have one yet, press the "Create new secret key" option.
+# 4. paste the key in the file called "my_file.txt" 
 
 with open('my_file.txt', 'r') as file:
     file_contents = file.read()
 
-# 4. here paste the openAI secret key instead of file_contents.
+# 5. if you skipped #4 than you can just replace the 'file_contents' with your secret key.
 
 openai.api_key = file_contents
 
