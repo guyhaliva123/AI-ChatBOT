@@ -35,3 +35,7 @@ python app.py
 -Conversational design for a friendly and intuitive user experience.
 
 -Completion of the Prompt Developer course on the OpenAI platform for crafting effective prompts and utilizing language models effectively.
+
+## Illustration
+
+![image](https://github.com/guyhaliva123/AI-ChatBOT/assets/116512226/6986fd9e-9400-464a-97e6-e3a03ab70904)
