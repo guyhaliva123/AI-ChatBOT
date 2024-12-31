@@ -1,61 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OrderBOT</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Custom styles */
-        body {
-            display: flex;
-            min-height: 100vh;
-            justify-content: center;
-            align-items: center;
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            max-width: 600px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
-    </style>
-</head>
-<body>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
     <div class="container">
-        <h1 class="text-center">OrderBOT for Pizza Delivery</h1>
-        <p class="text-center"><strong>AI Pizza Assistant:</strong>
-            <br>Hello! Welcome to our pizza ordering service. How can I assist you today?</p>
-        <div id="conversation">
-            {% for message in context %}
-                {% if message.role == 'user' %}
-                    <p><strong>Customer:</strong> {{ message.content }}</p>
-                {% elif message.role == 'assistant' %}
-                    <p><strong>AI Pizza Assistant:</strong> {{ message.content }}</p>
-                {% endif %}
-            {% endfor %}
-        </div>
-        <form method="POST">
-            <label for="user_input">Your Request:</label><br>
-            <textarea id="user_input" name="user_input" rows="4" cols="50"></textarea><br>
-            <div class="text-center">
-                <input type="submit" name="action" value="Chat" class="btn btn-primary">
-                <input type="submit" name="action" value="Finish Order" class="btn btn-success">
+      <div class="chat-header">
+        <h3 class="text-center mb-0">צ'אט לדיני תעבורה</h3>
+        <p class="text-center mb-0 small">
+          <strong>עורך דין AI</strong><br />
+          כל מה שרצית לדעת על דיני תעבורה בלחיצת כפתור
+        </p>
+      </div>
+
+      <div class="chat-messages" id="conversation">
+        {% for message in context %} {% if message.role == 'user' %}
+        <div class="message message-user">{{ message.content }}</div>
+        {% elif message.role == 'assistant' %}
+        <div class="message message-assistant">{{ message.content }}</div>
+        {% endif %} {% endfor %}
+      </div>
+
+      <div class="chat-input">
+        <form method="POST" class="mb-0" id="chatForm">
+          <div class="input-group">
+            <div class="textarea-container">
+              <textarea
+                id="user_input"
+                name="user_input"
+                class="form-control"
+                rows="1"
+                placeholder="הקלד את השאלה שלך כאן..."
+              ></textarea>
             </div>
+            <div class="input-group-append">
+              <button
+                type="submit"
+                name="action"
+                value="Chat"
+                class="btn btn-primary"
+              >
+                שלח
+              </button>
+              <button
+                type="submit"
+                name="action"
+                value="Finish Order"
+                class="btn btn-success"
+              >
+                סיים
+              </button>
+            </div>
+          </div>
         </form>
+      </div>
     </div>
 
-    <!-- Bootstrap JS and dependencies (optional) -->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <!-- Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
 </html>
-

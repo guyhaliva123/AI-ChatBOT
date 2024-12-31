@@ -1,5 +1,5 @@
 import openai
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,jsonify
 
 # steps to run the project on your own computer:
 
@@ -8,18 +8,18 @@ from flask import Flask, render_template, request
 # 3. copy the secret key if you don't have one yet, press the "Create new secret key" option.
 # 4. paste the key in the file called "api_key.txt" 
 
-with open('api_key.txt', 'r') as file:
+with open('app/api_key.txt', 'r') as file:
     file_contents = file.read()
 
 # 5. if you skipped #4 than you can just replace the 'file_contents' with your secret key.
 
 openai.api_key = file_contents
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 # openAI functions to create the wanted answer for a given question.
 
-def get_completion(prompt, model="gpt-3.5-turbo"):
+def get_completion(prompt, model="gpt-4o-mini"):
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model,
@@ -31,7 +31,7 @@ def get_completion(prompt, model="gpt-3.5-turbo"):
     return response.choices[0].message["content"]
 
 
-def get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0):
+def get_completion_from_messages(messages, model="gpt-4o-mini", temperature=0):
     response = openai.ChatCompletion.create(
         model=model,
         messages=messages,
@@ -46,33 +46,10 @@ def get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0)
 
 context = [
     {'role': 'system', 'content': """
-    You are OrderBot, an automated service to collect orders for a pizza restaurant. \
-    You first greet the customer, then collect the order, \
-    and then ask if it's a pickup or delivery. \
-    You wait to collect the entire order, then summarize it and check for a final \
-    time if the customer wants to add anything else. \
-    If it's a delivery, you ask for an address. \
-    Finally, you collect the payment. \
-    Make sure to clarify all options, extras, and sizes to uniquely \
-    identify the item from the menu. \
-    You respond in a short, very conversational friendly style. \
-    The menu includes \
-    pepperoni pizza  12.95, 10.00, 7.00 \
-    cheese pizza   10.95, 9.25, 6.50 \
-    eggplant pizza   11.95, 9.75, 6.75 \
-    fries 4.50, 3.50 \
-    greek salad 7.25 \
-    Toppings: \
-    extra cheese 2.00, \
-    mushrooms 1.50 \
-    sausage 3.00 \
-    canadian bacon 3.50 \
-    AI sauce 1.50 \
-    peppers 1.00 \
-    Drinks: \
-    coke 3.00, 2.00, 1.00 \
-    sprite 3.00, 2.00, 1.00 \
-    bottled water 5.00 \
+        "אתה עוזר משפטי המתמחה בדיני תעבורה במדינת ישראל. תפקידך הוא לספק תשובות מדויקות, מפורטות ותמציתיות בעברית. 
+            השתמש בשפה פורמלית ומקצועית המתאימה לעורך דין, והשתדל לציין מהם המקורות שלך לתשובות שאתה מספק, כגון חוקים רלוונטיים, פסיקות או פרסומים רשמיים ממשרד התחבורה או גורמים משפטיים אחרים.
+            במידה והשאלה אינה קשורה לדיני תעבורה בישראל, אנא הודע למשתמש בנימוס שאינך יכול לסייע בנושא זה והמלץ לפנות למומחה מתאים.
+        "
     """}
 ]
 
@@ -80,12 +57,24 @@ context = [
 def chat():
     global context
     if request.method == "POST":
-        prompt = request.form["user_input"]
-        action = request.form["action"]
+        prompt = request.form.get("user_input")
+        action = request.form.get("action")
+        
+        if not prompt or not action:
+            return jsonify({"error": "Missing input"}), 400
+
         if action == "Chat":
-            context.append({'role': 'user', 'content': f"{prompt}"})
-            response = get_completion_from_messages(context)
-            context.append({'role': 'assistant', 'content': f"{response}"})
+            context.append({'role': 'user', 'content': prompt})
+            try:
+                response = get_completion_from_messages(context)
+                context.append({'role': 'assistant', 'content': response})
+                return jsonify({
+                    "status": "success",
+                    "response": response
+                })
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500
+                
         elif action == "Finish Order":
             context.append(
                 {'role': 'system', 'content': 'create a summary of the previous food order. Itemize the price for each item\
@@ -98,4 +87,4 @@ def chat():
     return render_template("index.html", context=context)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5001)
